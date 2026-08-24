@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClearMatch - Smart Resume Screener</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header>
+        <div class="brand"><span class="brand-mark">✦</span> ClearMatch</div>
+        <div class="local-badge"><span></span> Local-only analysis</div>
+      </header>
+      <section class="hero">
+        <p class="eyebrow">Candidate intelligence</p>
+        <h1>Find the signal,<br /><em>not just the keywords.</em></h1>
+        <p class="lede">Upload resumes, add the role requirements, and get an explainable shortlist in seconds.</p>
+      </section>
+
+      <section class="workspace" aria-label="Resume screening workspace">
+        <div class="card job-card">
+          <div class="card-heading"><div><p class="eyebrow">01 / Role brief</p><h2>Job description</h2></div><span id="requirementCount" class="count">0 signals</span></div>
+          <textarea id="jobDescription" placeholder="Paste the role description here...&#10;&#10;Example: We're hiring a full-stack engineer with 3+ years of experience in React, Node.js, TypeScript, PostgreSQL, and AWS."></textarea>
+          <div class="detected"><span>Detected priorities</span><div id="skillsPreview" class="pills"><i>Add a job description to begin</i></div></div>
+        </div>
+
+        <div class="card upload-card">
+          <div class="card-heading"><div><p class="eyebrow">02 / Candidate pool</p><h2>Add resumes</h2></div><span id="resumeCount" class="count">0 added</span></div>
+          <label id="dropZone" class="drop-zone" for="resumeFiles"><input id="resumeFiles" type="file" accept=".pdf,.txt" multiple /><span class="upload-icon">↑</span><strong>Drop PDF or TXT files here</strong><small>or choose files from your device</small></label>
+          <div class="paste-row"><button id="pasteToggle" class="text-button" type="button">+ Paste a resume instead</button><div id="pastePanel" hidden><input id="pasteName" placeholder="Candidate name (optional)" /><textarea id="pasteResume" placeholder="Paste resume text..."></textarea><button id="addPasted" class="secondary" type="button">Add candidate</button></div></div>
+          <div id="fileList" class="file-list"></div>
+        </div>
+      </section>
+
+      <section class="actions"><div class="threshold"><label for="threshold">Shortlist at <b id="thresholdValue">70</b>+</label><input id="threshold" type="range" min="40" max="95" value="70" /><label class="ai-toggle" for="aiMode"><input id="aiMode" type="checkbox" /> AI evidence analysis</label></div><button id="screenButton" class="primary" type="button">Screen candidates <span>→</span></button></section>
+
+      <section id="results" class="results" hidden>
+        <div class="results-heading"><div><p class="eyebrow">03 / Results</p><h2>Candidate ranking</h2><p id="resultSummary" class="muted"></p></div><button id="exportButton" class="secondary" type="button">Export CSV</button></div>
+        <div id="candidateCards" class="candidate-cards"></div>
+      </section>
+      <p class="disclaimer">Scores are decision-support signals, not hiring decisions. Review each resume and use consistent, job-related criteria.</p>
+    </main>
+    <template id="candidateTemplate"><article class="candidate"><div class="score-ring"><b></b><small>/100</small></div><div class="candidate-main"><div class="candidate-top"><div><h3></h3><p class="candidate-email"></p></div><span class="status"></span></div><p class="reason"></p><p class="ai-reason" hidden></p><div class="match-row"><div><span>Matched skills</span><div class="matched pills"></div></div><div><span>Needs review</span><div class="missing pills"></div></div></div></div><button class="details" type="button">View profile</button><div class="profile" hidden></div></article></template>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
