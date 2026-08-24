@@ -21,7 +21,7 @@ Then visit `http://localhost:3000`, check **AI evidence analysis**, and screen t
 - Accepts PDF, TXT, and pasted resume content
 - Extracts candidate name, email, skills, experience, and education
 - Identifies priority skills and experience requirements from a job description
-- Scores each candidate from 0-100 and explains the decision
+- Produces a local LLM 1-10 fit score with evidence and gaps, alongside a deterministic 0-100 score
 - Lets you adjust the shortlist threshold and export a CSV
 - Adds optional AI-generated, job-related evidence and gap summaries
 
@@ -48,3 +48,39 @@ Return concise evidence and gaps for human review.
 ```
 
 The deterministic score stays visible alongside the model output. Treat every result as decision support: review source resumes and apply consistent human oversight.
+
+## Architecture
+
+```
+Browser dashboard
+  -> PDF.js extracts PDF text / browser reads TXT text
+  -> deterministic extractor identifies profile signals
+  -> Node.js local server
+      -> Ollama local model: semantic 1-10 fit score, evidence, and gaps
+      -> SQLite: parsed profile, resume text, job description, and scores
+  -> ranked shortlist and CSV export
+```
+
+The SQLite database is created automatically as `data.sqlite` beside the server. It stays local and is intentionally excluded from Git. You can inspect saved records through `GET /api/resumes` while the app is running.
+
+## LLM prompt and output contract
+
+The server sends the job description plus resume text to the locally running Ollama model and requires this structured response for every candidate:
+
+```json
+{
+  "candidates": [{
+    "id": 0,
+    "fit_score": 1,
+    "matched_evidence": ["Job-related evidence from the resume"],
+    "gaps": ["Job-related gap or missing evidence"],
+    "justification": "Concise, job-related rationale for human review"
+  }]
+}
+```
+
+The prompt prohibits protected-characteristic inference and requires the model to provide decision support only, not a hiring decision.
+
+## Demo
+
+Use [DEMO_SCRIPT.md](DEMO_SCRIPT.md) as a 2-3 minute walkthrough for recording a demo video.
