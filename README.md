@@ -83,4 +83,4 @@ The prompt prohibits protected-characteristic inference and requires the model t
 
 ## Demo
 
-Use [DEMO_SCRIPT.md](DEMO_SCRIPT.md) as a 2-3 minute walkthrough for recording a demo video.
+Use [demo-video.mp4](demo-video.mp4) as a 1 minute walkthrough for understanding how to use the smart resume screener.
